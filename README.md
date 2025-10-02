@@ -1,8 +1,6 @@
 # surface-shell
 ## Intro
-```
-This is a graduation project for my school. I want to make a hyprland rice that will be very usable on yoga/surface like desktops. I will be developing this on surface pro 7+ with arch installed and my plan is to integrate with the pen and more. This rice will have touch centered ui with a catch... I don't like mouse/touch centered UI that much. So I will be also making a toggle, that transforms the UI for keyboard-centered UI.
-```
+> This is a graduation project for my school. I want to make a hyprland rice that will be very usable on yoga/surface like desktops. I will be developing this on surface pro 7+ with arch installed and my plan is to integrate with the pen and more. This rice will have touch centered ui with a catch... I don't like mouse/touch centered UI that much. So I will be also making a toggle, that transforms the UI for keyboard-centered UI.
 ## Overview
 ### Features 
 - Touch centered UI (Not yet)
