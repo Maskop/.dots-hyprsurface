@@ -10,7 +10,6 @@
 ## What I mean when I say
 ### Touch centered UI
 
-> [!summary]
 >  Touch centered IU is when you don't need to take out your keyboard to do things in the system.
 
 - Bar above apps for moving them and closing them.
