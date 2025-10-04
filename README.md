@@ -25,7 +25,7 @@ My goal is to make an easy to use desktop/tablet in linux. For compositor I choo
 ### Goals
 1) Make an UI that is touch centered - first steps {Basic bar, app tiling, some controls}
 2) On screen keyboard (December)
-3) Wrking pen
+3) Working pen
 4) Make notification center + KDE connect for connection to phone
 5) Set up gestures for bringing up UI elements (February)
 6) Make an UI that is touch centered - finishing touches (March)
@@ -34,3 +34,17 @@ My goal is to make an easy to use desktop/tablet in linux. For compositor I choo
 8) Make a toggle to change UI
 9) Make a music control center
 10) Create a custom greeter
+### Schedule
+**September - December**
+- Create a basic bar with time, desktops, volume and powermenu
+- Make an onscreen keyboard, that will be togglable
+**December - February**
+- Setup support for pen pressure and button clicks
+- Add notification center to the bar and create notification popups
+- Make gestures, that will bring up UI elements
+**February - March**
+- Finish up all the UI elements and bautify them
+**March - April**
+- Finish the documentation (Will be created throughout the whole project)
+**Somewhere between 18. - 21. May**
+- Get fucking evaluated by the comitee
