@@ -16,6 +16,9 @@
 - The apps are tiling, in bar the option to un-tile.
 - The main bar has notification center, clock, calendar, button for opening app menu and running apps.
 - Gestures for bringing up UI elements such as: MENU, Volume and such
+### Desktop mode
+- Is less UI cluttered (Smaller icons, etc.)
+- Is much more keyboard centered
 ### Pen support
 - The pen senses pressure
 - You can set custom actions for pen button
