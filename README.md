@@ -38,7 +38,7 @@ My goal is to make an easy to use desktop/tablet in linux. For compositor I choo
 ### Schedule
 - **September - December**
   - Create a basic bar with time, desktops, volume and powermenu
-  - Make an onscreen keyboard, that will be togglable
+  - Make an onscreen keyboard, that will be toggleable
 - **December - February**
   - Setup support for pen pressure and button clicks
   - Add notification center to the bar and create notification popups
