@@ -40,7 +40,6 @@ My goal is to make an easy to use desktop/tablet in linux. For compositor I choo
   - Create a basic bar with time, desktops, volume and powermenu
   - Make an onscreen keyboard, that will be toggleable
 - **December - February**
-  - Setup support for pen pressure and button clicks
   - Add notification center to the bar and create notification popups
   - Make gestures, that will bring up UI elements
 - **February - March**
