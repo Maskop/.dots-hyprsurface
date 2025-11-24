@@ -103,7 +103,8 @@
         "BetterSettings": {
             "enabled": true,
             "disableFade": true,
-            "eagerLoad": true
+            "eagerLoad": true,
+            "organizeMenu": true
         },
         "BetterUploadButton": {
             "enabled": false
@@ -249,7 +250,7 @@
         "ImageZoom": {
             "enabled": true,
             "size": 100,
-            "zoom": 4.7,
+            "zoom": 1.4719093693689438,
             "saveZoomValues": true,
             "nearestNeighbour": false,
             "square": false,
@@ -658,6 +659,6 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1757448661537
+        "settingsSyncVersion": 1762416223420
     }
 }
