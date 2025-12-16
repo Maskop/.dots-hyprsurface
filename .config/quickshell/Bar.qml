@@ -11,15 +11,16 @@ Scope {
       anchors {
         top: true
         left: true
-        right: true
+        bottom: true
       }
 
-      implicitHeight: 30
+      implicitWidth: 50
 
-      color: "#0F0713"
+      color: "#000000"
 
       ClockWidget {
-        anchors.centerIn: parent
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
 
         // no more time binding
       }

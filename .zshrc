@@ -74,4 +74,8 @@ alias dots='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 [[ -f /home/maskop/.dart-cli-completion/zsh-config.zsh ]] && . /home/maskop/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+# Colors
+# source ~/.scripts/variables.sh
+# sh ~/.scripts/terminal.sh
+
 fastfetch

@@ -80,6 +80,7 @@ if [ -n "$selected" ]; then
     if [ -n "$original_path" ]; then
         # Set wallpaper using swww with the original file
         swww img "$original_path" --transition-type=center
+        hellwal -i $original_path --neon-mode
 
         # Save the selection for persistence
         echo "$original_path" > "$HOME/.cache/current_wallpaper"
