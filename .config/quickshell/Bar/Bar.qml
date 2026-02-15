@@ -1,4 +1,5 @@
 import Quickshell
+import "../Widgets"
 
 
 Scope {
@@ -25,6 +26,14 @@ Scope {
 
         // no more time binding
       }
+
+      BatteryWidget {
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        // no more percentage binding
+      } 
+      
     }
   }
 }

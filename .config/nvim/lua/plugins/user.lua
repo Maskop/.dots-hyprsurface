@@ -35,7 +35,7 @@ return {
   {
     "swaits/universal-clipboard.nvim",
     opts = {
-      verbose = true, -- optional: set true to log detection details
+      verbose = false, -- optional: set true to log detection details
     },
   },
   { "elkowar/yuck.vim" },
@@ -47,6 +47,7 @@ return {
       filetype = "arduino",
     },
   },
+  { "RaafatTurki/hex.nvim" },
 
   -- {
   --   "glebzlat/arduino-nvim",
