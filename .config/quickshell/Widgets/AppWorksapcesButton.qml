@@ -1,13 +1,16 @@
 import Quickshell
 import QtQuick
-// import "Screenspace.qml"
+import QtQuick.Layouts
+import qs.Services
+import qs.Popups
 
 Rectangle {
   id: popupButton
-  implicitWidth: parent.height - 4
-  implicitHeight: parent.height - 4
   color: Design.colBg
-  radius: 4
+  Layout.preferredWidth: this.height
+  radius: Design.widgetRadius
+
+  property var parentWindow: ""
 
   Text {
     text: ""
@@ -23,15 +26,17 @@ Rectangle {
     }
   }
 
-  property var test: false
+  AppsWorkspaces {
+    id: appsWorkspaces
+    anchor.window: popupButton.parentWindow
+    anchor.rect.y: Design.barHeight + Design.barMargins
+  }
 
   MouseArea {
     anchors.fill: parent
     onClicked: {
-      appsWorkspaces.visible = !appsWorkspaces.visible
-      console.log("Popup.visible = " + appsWorkspaces.visible)
-      test = !test
-      console.log("test = " + test)
+      appsWorkspaces.toggle()
+      appsWorkspaces.setWidth()
     }
   }
 }
