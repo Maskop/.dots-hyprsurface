@@ -21,16 +21,12 @@ PopupWindow {
 
   // Function to adopt width to the text
   function setWidth() {
+    maxWidth = 0
     for (let i = 0; i < activeApps.clients.length; i++) {
       activeApps.maxWidth = Math.max(activeAppsList.itemAtIndex(i).textWidth, activeApps.maxWidth)
     }
     activeApps.componentHeight = activeAppsList.itemAtIndex(0).height
     activeApps.implicitWidth = activeApps.maxWidth + activeApps.componentHeight + 2*5 + 1
-
-    // console.log("maxWidth = " + activeApps.maxWidth)
-    // console.log("componentHeight = " + activeApps.componentHeight)
-    // console.log("currentWidth = " + activeApps.width)
-    // console.log(maxWidth + componentHeight + 2*5 + 1)
   }
 
   implicitWidth: maxWidth + componentHeight + 2*5 + 1
@@ -189,5 +185,9 @@ PopupWindow {
       delegate: appDelegate
 
     }
+  }
+  Shortcut {
+    sequence: "Escape"
+    onActivated: activeApps.toggle()
   }
 }

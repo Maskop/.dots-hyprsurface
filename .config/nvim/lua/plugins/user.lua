@@ -40,20 +40,15 @@ return {
   },
   { "elkowar/yuck.vim" },
   { "xiyaowong/transparent.nvim" },
-  {
-    "glebzlat/arduino-nvim",
-    config = {
-      function() require("arduino-nvim").setup() end,
-      filetype = "arduino",
-    },
-  },
-  { "RaafatTurki/hex.nvim" },
-
+  { "Leon-Degel-Koehn/qmlformat.nvim" },
+  -- { "Leon-Degel-Koehn/qmlformat.nvim" },
   -- {
-  --   "glebzlat/arduino-nvim",
-  --   config = {
-  --     function() require("arduino-nvim").setup() end,
-  --     filetype = "arduino",
-  --   }
+  --   "neovim/nvim-lspconfig",
+  --   opts = function(_, opts)
+  --     local esp32 = require "esp32"
+  --     opts.servers = opts.servers or {}
+  --     opts.servers.clangd = esp32.lsp_config()
+  --     return opts
+  --   end,
   -- },
 }

@@ -14,6 +14,7 @@ Scope {
       property string position: "top"
 
       screen: modelData
+      aboveWindows: false
       
       anchors {
         bottom: position === "bottom"
