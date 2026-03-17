@@ -48,7 +48,7 @@ Rectangle {
       Layout.leftMargin: Design.fontSize / 3
 
       Text {
-          id: textVol
+        id: textVol
         anchors {
           verticalCenter: parent.verticalCenter
           horizontalCenter: parent.horizontalCenter
@@ -64,6 +64,7 @@ Rectangle {
       
       MouseArea {
         anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: {
           Volume.toggleMute()

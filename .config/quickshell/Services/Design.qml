@@ -28,4 +28,7 @@ Singleton {
   property int widgetHeight: barHeight - widgetsSub
   property int barMargins: (barHeight - widgetHeight) / 2
   property int widgetRadius: fontSize * (2/3)
+
+  // launcher settings``
+  property real launcherOpacity: 0.9
 }
