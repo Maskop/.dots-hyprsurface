@@ -73,6 +73,7 @@ Scope {
           }
         }
 
+        // Right
         RowLayout {
           anchors {
             verticalCenter: parent.verticalCenter
@@ -85,6 +86,11 @@ Scope {
 
           StatusWidget {
             Layout.preferredHeight: Design.widgetHeight
+          }
+
+          VirtKeyboardButton {
+            Layout.preferredHeight: Design.widgetHeight
+            parentWindow: barWindow
           }
         }
       }

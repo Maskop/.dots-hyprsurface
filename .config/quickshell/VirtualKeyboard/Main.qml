@@ -7,7 +7,7 @@ import Quickshell.Io
 Loader {
     id: root
 
-    readonly property string typeKeyScript: Quickshell.shellDir + "/type-key.py"
+    readonly property string typeKeyScript: Quickshell.shellDir + "/VirtualKeyboard/type-key.py"
 
     Process {
         id: resetScript
@@ -29,7 +29,7 @@ Loader {
 
     FolderListModel {
         id: jsonFiles
-        folder:  "file://" + Quickshell.shellDir + "/layouts/"
+        folder:  "file:///home/maskop/.config/quickshell/VirtualKeyboard/layouts/"
         nameFilters: ["*.json"]
     }
 
@@ -39,7 +39,7 @@ Loader {
 
     FileView {
         id: settings
-        path: Qt.resolvedUrl("./settings.json")
+        path: Qt.resolvedUrl(Quickshell.shellDir + "/VirtualKeyboard/settings.json")
         blockLoading: true
     }
 
@@ -211,10 +211,10 @@ Loader {
                                 // sync every instance
                                 for (var i=0; i<allKeyboards.model.length; i++ ){
                                     let _screen = allKeyboards.model[i]
-                                    if (_screen != screen) {
+                                    if (_screen != virtualKeyboard.screen) {
                                         let bg = background.getBackgrounds(_screen)
-                                        let globalX = background.x + screen.x
-                                        let globalY = background.y + screen.y
+                                        let globalX = background.x + virtualKeyboard.screen.x
+                                        let globalY = background.y + virtualKeyboard.screen.y
                                         bg.x = background.x
                                         bg.y = background.y
                                         for (let child of bg.children) {
@@ -273,75 +273,75 @@ Loader {
                             }
                         }
 
-                        Rectangle {
-                            id: dragButton
-                            objectName: "dragButton"
-                            width: 50
-                            height: 50
-                            anchors.top: parent.top
-                            anchors.left: parent.left
-                            anchors.topMargin: 10
-                            anchors.leftMargin: 10
-                            
-                            property bool pressed: false
-                            property real localX: 0
-                            property real localY: 0
-                            property real startX: 0
-                            property real startY: 0
-                            
-                            color: pressed ? root.colorData.mOnSurface : root.colorData.mSurfaceVariant
-                            border.color: root.colorData.mOutline
-                            radius: 20
-
-                            Text {
-                                anchors.centerIn: parent
-                                text: ""
-                                font.weight: 700
-                                font.pointSize: 13
-                                color: dragButton.pressed ? root.colorData.mSurfaceVariant : root.colorData.mOnSurface
-                            }
-                            
-                            MouseArea {
-                                anchors.fill: parent
-                                onPressed: {
-                                    dragButton.pressed = true
-                                }
-
-                                drag.target: background
-                                drag.axis: Drag.XAndYAxis
-
-                                onPositionChanged: {
-                                    // sync every instance
-                                    for (var i=0; i<allKeyboards.model.length; i++ ){
-                                        let _screen = allKeyboards.model[i]
-                                        if (_screen != screen) {
-                                            let bg = background.getBackgrounds(_screen)
-                                            let globalX = background.x + screen.x
-                                            let globalY = background.y + screen.y
-                                            bg.x = background.x
-                                            bg.y = background.y
-                                            for (let child of bg.children) {
-                                                if (child.objectName == "dragButton") {
-                                                    child.pressed = true
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                onReleased: {
-                                    for (var i=0; i<allKeyboards.model.length; i++ ){
-                                        let _screen = allKeyboards.model[i]
-                                        let bg = background.getBackgrounds(_screen)
-                                        for (let child of bg.children) {
-                                            if (child.objectName == "dragButton") {
-                                                child.pressed = false
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        // Rectangle {
+                        //     id: dragButton
+                        //     objectName: "dragButton"
+                        //     width: 50
+                        //     height: 50
+                        //     anchors.top: parent.top
+                        //     anchors.left: parent.left
+                        //     anchors.topMargin: 10
+                        //     anchors.leftMargin: 10
+                        //
+                        //     property bool pressed: false
+                        //     property real localX: 0
+                        //     property real localY: 0
+                        //     property real startX: 0
+                        //     property real startY: 0
+                        //
+                        //     color: pressed ? root.colorData.mOnSurface : root.colorData.mSurfaceVariant
+                        //     border.color: root.colorData.mOutline
+                        //     radius: 20
+                        //
+                        //     Text {
+                        //         anchors.centerIn: parent
+                        //         text: ""
+                        //         font.weight: 700
+                        //         font.pointSize: 13
+                        //         color: dragButton.pressed ? root.colorData.mSurfaceVariant : root.colorData.mOnSurface
+                        //     }
+                        //
+                        //     MouseArea {
+                        //         anchors.fill: parent
+                        //         onPressed: {
+                        //             dragButton.pressed = true
+                        //         }
+                        //
+                        //         drag.target: background
+                        //         drag.axis: Drag.XAndYAxis
+                        //
+                        //         onPositionChanged: {
+                        //             // sync every instance
+                        //             for (var i=0; i < allKeyboards.model.length; i++ ){
+                        //                 let _screen = allKeyboards.model[i]
+                        //                 if (_screen != virtualKeyboard.screen) {
+                        //                     let bg = background.getBackgrounds(_screen)
+                        //                     let globalX = background.x + virtualKeyboard.screen.x
+                        //                     let globalY = background.y + virtualKeyboard.screen.y
+                        //                     bg.x = background.x
+                        //                     bg.y = background.y
+                        //                     for (let child of bg.children) {
+                        //                         if (child.objectName == "dragButton") {
+                        //                             child.pressed = true
+                        //                         }
+                        //                     }
+                        //                 }
+                        //             }
+                        //         }
+                        //
+                        //         onReleased: {
+                        //             for (var i=0; i<allKeyboards.model.length; i++ ){
+                        //                 let _screen = allKeyboards.model[i]
+                        //                 let bg = background.getBackgrounds(_screen)
+                        //                 for (let child of bg.children) {
+                        //                     if (child.objectName == "dragButton") {
+                        //                         child.pressed = false
+                        //                     }
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // }
                         ColumnLayout {
                             id: mainColumn
                             anchors.fill: parent

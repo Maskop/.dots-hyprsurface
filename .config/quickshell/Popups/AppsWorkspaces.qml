@@ -29,7 +29,7 @@ PopupWindow {
     activeApps.implicitWidth = activeApps.maxWidth + activeApps.componentHeight + 2*5 + 1
   }
 
-  implicitWidth: maxWidth + componentHeight + 2*5 + 1
+  implicitWidth: maxWidth
   implicitHeight: activeAppsList.contentHeight + 10
 
   property var clients: []

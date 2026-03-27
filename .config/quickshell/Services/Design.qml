@@ -29,6 +29,14 @@ Singleton {
   property int barMargins: (barHeight - widgetHeight) / 2
   property int widgetRadius: fontSize * (2/3)
 
-  // launcher settings``
+  // launcher settings
   property real launcherOpacity: 0.9
+
+  // notif popup settings
+  property int notifPopupWidthByMonitorWidthRatio: 4        /* this number is the denominator */
+  property real notifPopupOpacity: 0.9
+  property bool notifPopupImage: false
+  property int popupTimeout: 5000                           /* time in ms */
+  property int iconSize: 40
+  property int notifPopupMaxCharacters: 300
 }
