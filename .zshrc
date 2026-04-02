@@ -75,7 +75,7 @@ alias dots='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 ## [/Completion]
 
 # Colors
-# source ~/.scripts/variables.sh
-# sh ~/.scripts/terminal.sh
+source ~/.cache/hellwal/variables.sh
+sh ~/.cache/hellwal/terminal.sh
 
 fastfetch

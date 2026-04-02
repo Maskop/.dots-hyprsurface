@@ -32,11 +32,30 @@ Singleton {
   // launcher settings
   property real launcherOpacity: 0.9
 
+  // notif server settings
+  property bool notifImageSupport: false
+
   // notif popup settings
-  property int notifPopupWidthByMonitorWidthRatio: 4        /* this number is the denominator */
+  property real notifPopupWidthByMonitorWidthRatio: 1/7
   property real notifPopupOpacity: 0.9
-  property bool notifPopupImage: false
-  property int popupTimeout: 5000                           /* time in ms */
-  property int iconSize: 40
+  property int notifPopupTimeout: 5000                           /* time in ms */
+  property int notifPopupIconSize: 40
   property int notifPopupMaxCharacters: 300
+
+  // notif center settings
+  property real notifCenterWidthByMonitorWidthRatio: 1/7
+
+  // widget toggles
+  property bool clockWidgetVisible: true
+  property bool appWorkspacesButtonVisible: true
+  property bool statusWidgetVisible: true
+  property bool virtKeyboardButtonVisible: false
+  property bool workspacesVisible: true
+  property bool workspaceMoverButtonVisible: true
+
+  // check for changes settings
+  property bool checkBrightness: true
+  property int checkBrightnessInterval: 500
+  property bool checkBattery: true
+  property int checkbatteryInterval: 5000  
 }

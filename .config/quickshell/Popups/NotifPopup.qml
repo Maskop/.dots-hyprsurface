@@ -3,12 +3,13 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Widgets
 import qs.Services
 
 PanelWindow {
   id: root
 
-  property int maxWidth: Quickshell.screens[0].width / Design.notifPopupWidthByMonitorWidthRatio
+  property int maxWidth: Quickshell.screens[0].width * Design.notifPopupWidthByMonitorWidthRatio
 
 
   screen: Quickshell.screens[0]
@@ -21,6 +22,10 @@ PanelWindow {
   anchors {
     top: true
     right: true
+  }
+
+  margins {
+    right: maxWidth/30
   }
   
   Connections {
@@ -79,37 +84,47 @@ PanelWindow {
           return total
         }
 
-        implicitWidth: root.maxWidth * 29/30
+        implicitWidth: root.maxWidth
         implicitHeight: childrenRect.height
 
         color: Design.colBg
         radius: 8
 
-        RowLayout {
-          implicitWidth: root.maxWidth * 29/30
-          implicitHeight: notifContainer.height
 
+        RowLayout {
+          anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+          }
+          implicitHeight: notifContainer.height
+          // implicitWidth: parent.width
+
+            
           Image {
-            property int appIconSize: (notifContainer.showIcon() ? Design.iconSize : 0)
-            visible: notifContainer.showIcon()
+            property int appIconSize: (notifContainer.showIcon() ? Design.notifPopupIconSize : 0)
             Layout.preferredHeight: appIconSize
             Layout.preferredWidth: appIconSize
-            Layout.topMargin: 8
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-            Layout.leftMargin: 8
+            visible: notifContainer.showIcon()
+            width: appIconSize
+            height: appIconSize
+            Layout.margins: 8
 
             source: {
+              console.log("this.width: " + this.width)
+              console.log("this.height: " + this.height)
+              console.log("maxWidth: " + root.maxWidth)
               if (modelData.appIcon.indexOf("/") !== -1)
                 return "file://" + modelData.appIcon;
 
               return "image://icon/" + modelData.appIcon;
             }
           }
-          
+
           ColumnLayout {
             id: contentColumn
 
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
             Layout.topMargin: 8
             Layout.bottomMargin: 8
 
@@ -117,7 +132,7 @@ PanelWindow {
 
             property int textWidth: {
               if (notifContainer.showIcon()) {
-                return root.maxWidth - Design.iconSize
+                return root.maxWidth - Design.notifPopupIconSize * 2 - Design.fontSize
               } else {
                 return root.maxWidth
               }
@@ -125,7 +140,7 @@ PanelWindow {
 
             Rectangle {
               color: "transparent"
-              implicitWidth: parent.width
+              implicitWidth: childrenRect.width
               implicitHeight: childrenRect.height
               Text {
                 id: appNameT
@@ -157,7 +172,7 @@ PanelWindow {
             
             Rectangle {
               color: "transparent"
-              implicitWidth: parent.width
+              implicitWidth: childrenRect.width
               implicitHeight: childrenRect.height
 
               Text {
@@ -165,7 +180,7 @@ PanelWindow {
 
                 width: contentColumn.textWidth
                 text: NotificationService.shortenedMessage(modelData.summary)
-                wrapMode: Text.WordWrap
+                wrapMode: Text.Wrap
                 color: "white"
 
                 leftPadding: 5
@@ -191,7 +206,7 @@ PanelWindow {
 
             Rectangle {
               color: "transparent"
-              implicitWidth: parent.width
+              implicitWidth: childrenRect.width
               implicitHeight: childrenRect.height
 
               Text {
@@ -199,7 +214,7 @@ PanelWindow {
 
                 width: contentColumn.textWidth
                 text: NotificationService.shortenedMessage(modelData.body)
-                wrapMode: Text.WordWrap
+                wrapMode: Text.Wrap
                 color: "white"
 
                 leftPadding: 5
@@ -220,6 +235,42 @@ PanelWindow {
                   }
                 }
 
+              }
+            }
+          }
+
+          Rectangle {
+            implicitWidth: Design.fontSize * 1.2
+            implicitHeight: Design.fontSize * 1.2
+            color: Design.colMuted
+            radius: this.implicitHeight
+
+            Layout.alignment: Qt.AlignTop | Qt.AlignRight
+            Layout.margins: 3
+
+            Text {
+              text: "󰖭"
+              color: "white"
+              anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+              }
+
+              horizontalAlignment: Text.AlignHCenter
+              verticalAlignment: Text.AlignVCenter
+              font {
+                family: Design.fontFamily
+                pixelSize: Design.fontSize
+              }
+            }
+
+            MouseArea {
+              anchors.fill: parent
+
+              hoverEnabled: true
+              cursorShape: Qt.PointingHandCursor
+              onClicked: {
+                NotificationService.closePopup(modelData.id)
               }
             }
           }

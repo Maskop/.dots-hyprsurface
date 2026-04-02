@@ -14,7 +14,7 @@ Singleton {
 
   Process {
     id: getMaxBrightness
-    running: true
+    running: Design.checkBrightness
 
     command: ["brightnessctl", "m"]
 
@@ -46,8 +46,8 @@ Singleton {
   }
 
   Timer {
-    interval: 500
-    running: true
+    interval: Design.checkBrightnessInterval
+    running: Design.checkBrightness
     repeat: true
 
     onTriggered: {

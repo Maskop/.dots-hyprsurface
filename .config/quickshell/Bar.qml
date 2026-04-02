@@ -40,6 +40,7 @@ Scope {
         color: Design.transparent
         radius: Design.widgetRadius
 
+        // Left
         RowLayout {
           anchors {
             left: parent.left
@@ -49,16 +50,29 @@ Scope {
           }
           spacing: 10
 
+          AppLauncherButton {
+            visible: Design.workspacesVisible
+            Layout.preferredHeight: Design.widgetHeight
+          }
+          
+          Workspaces {
+            visible: Design.workspacesVisible
+            Layout.preferredHeight: Design.widgetHeight
+          }
+
           AppWorksapcesButton {
+            visible: Design.appWorkspacesButtonVisible
             Layout.preferredHeight: Design.widgetHeight
             parentWindow: barWindow
           }
 
-          Workspaces {
+          WorkspaceMoverButton {
+            visible: Design.workspaceMoverButtonVisible
             Layout.preferredHeight: Design.widgetHeight
           }
         }
 
+        // Center
         RowLayout {
           anchors {
             horizontalCenter: parent.horizontalCenter
@@ -69,6 +83,7 @@ Scope {
           spacing: 10
 
           ClockWidget {
+            visible: Design.clockWidgetVisible
             Layout.preferredHeight: Design.widgetHeight
           }
         }
@@ -85,12 +100,13 @@ Scope {
           layoutDirection: Qt.RightToLeft
 
           StatusWidget {
+            visible: Design.statusWidgetVisible
             Layout.preferredHeight: Design.widgetHeight
           }
 
           VirtKeyboardButton {
+            visible: Design.virtKeyboardButtonVisible
             Layout.preferredHeight: Design.widgetHeight
-            parentWindow: barWindow
           }
         }
       }
