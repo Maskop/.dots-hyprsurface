@@ -43,8 +43,8 @@ PanelWindow {
   NotifCenter {
     id: notifBox
 
-    // x: (root.notifBoxOpen || notifHandler.hovered) ? root.width - root.notifBoxWidth - Design.notifCenterMargins: root.width - root.peekWidth
-    x: root.notifBoxOpen ? root.width - root.notifBoxWidth - Design.notifCenterMargins: root.width - root.peekWidth
+    x: (root.notifBoxOpen || notifHandler.hovered) ? root.width - root.notifBoxWidth - Design.notifCenterMargins: root.width - root.peekWidth
+    // x: root.notifBoxOpen ? root.width - root.notifBoxWidth - Design.notifCenterMargins: root.width - root.peekWidth
     width: root.notifBoxWidth
     height: root.notifBoxHeight
 
@@ -58,7 +58,7 @@ PanelWindow {
     }
 
     TapHandler {
-      acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus | PointerDevice.TouchScreen
+      acceptedDevices: PointerDevice.Stylus | PointerDevice.TouchScreen
       onTapped: root.notifBoxOpen = !root.notifBoxOpen
     }    
 
