@@ -33,7 +33,8 @@ Singleton {
   function dismiss(id) {
     closePopup(id)
     for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].id == id) {
+      if (notifications[i].id === id) {
+        console.log("deleted notification: " + notifications[i].id + " " + notifications[i].summary)
         notifications.pop(i).dismiss()
         break;
       }
@@ -48,7 +49,7 @@ Singleton {
 
   function closePopup(id) {
     for (let i = 0; i < notifActive.length; i++) {
-      if (notifActive[i].id == id) {
+      if (notifActive[i].id === id) {
         notifActive.pop(i).dismiss()
         break;
       }
