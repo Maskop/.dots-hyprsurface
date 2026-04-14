@@ -1,6 +1,11 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Export PATH
+export PATH=/usr/local/texlive/2026/bin/x86_64-linux:$PATH
+export MANPATH=/usr/local/texlive/2026/texmf-dist/doc/man:$MANPATH
+export INFOPATH=/usr/local/texlive/2026/texmf-dist/doc/info:$INFOPATH
+
 ZSH_THEME="bureau"
 
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
@@ -8,7 +13,7 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 COMPLETION_WAITING_DOTS="true"
 
 # Add plugins here
-plugins=(git genpass ssh kitty)
+plugins=(git copyfile archlinux ssh kitty)
 
 source $ZSH/oh-my-zsh.sh
 

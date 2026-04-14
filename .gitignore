@@ -36,22 +36,14 @@
 !.config/fastfetch/**
 !.config/flameshot/
 !.config/flameshot/**
-!.config/nvim/
-!.config/nvim/**
-!.config/spicetify/
-!.config/spicetify/**
 !.config/quickshell/
 !.config/quickshell/**
+!.config/hellwal/
+!.config/hellwal/**
 
 # .scripts
 !.scripts/
 !.scripts/**
-
-# .xsettingsd
-!.xsettingsd
-
-# starship
-!starship.toml
 
 # oh-my-zsh
 !.zsh/
@@ -75,13 +67,6 @@
 
 
 # OTHERS
-
-# vesktop
-!.config/vesktop/
-.config/vesktop/*
-!.config/vesktop/settings.json
-!.config/vesktop/settings/
-!.config/vesktop/settings/settings.json
 
 # git-ressources
 !git-ressources/
