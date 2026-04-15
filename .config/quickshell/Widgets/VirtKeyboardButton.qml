@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import qs.Services
-import qs.VirtualKeyboard
+// import qs.VirtualKeyboard
 
 Rectangle {
   id: root
