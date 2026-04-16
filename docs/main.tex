@@ -1,0 +1,1016 @@
+\documentclass[12pt,a4paper]{article}
+
+% Balíčky
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[left=0.5in,right=0.5in,top=1in,bottom=1in]{geometry}
+\usepackage{hyperref} % klikací odkazy v PDF
+\usepackage{graphicx} % vkládání obrázků
+\usepackage{listings} % zvýrazňování kódu
+\usepackage{xcolor} % nutné pro \definecolor
+\usepackage{amsmath, amssymb}
+\usepackage{titlesec} % balíček na formátování nadpisů
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage{forest}
+\usepackage[nopar]{kantlipsum}
+\usepackage{graphicx}
+\usepackage{etoc}
+\usepackage{titletoc}
+
+% Bibliography %
+\usepackage[
+ backend=biber,
+ style=iso-numeric,
+ sorting=none,
+ autocite=plain
+]{biblatex}
+\addbibresource{HYPRSURFACE.bib}
+
+\titleformat{\section}[hang]
+  {\normalfont\huge\bfseries}
+  {\thesection} % jen číslo kapitoly
+  {1em}
+  {}
+
+\graphicspath{ {./Photos/} }
+
+% Nastavení pro zdrojové kódy
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codeframe}{RGB}{200,200,200}
+\definecolor{keyword}{RGB}{0,0,180}
+\definecolor{comment}{RGB}{0,128,0}
+\definecolor{string}{RGB}{163,21,21}
+
+\lstset{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword}\bfseries,
+    commentstyle=\color{comment}\itshape,
+    stringstyle=\color{string},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=10pt,
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=2,
+    captionpos=b
+}
+
+\pagestyle{fancy}
+\lhead{\today}
+\chead{HYPRSURFACE}
+\rhead{Jáchym Otáhal}
+\setlength{\headheight}{15pt}
+
+% Patch for hyphens %
+\usepackage{regexpatch}
+\makeatletter
+% Change the - delimiter to an active character
+\xpatchparametertext\@@@cmidrule{-}{\cA-}{}{}
+\xpatchparametertext\@cline{-}{\cA-}{}{}
+\makeatother
+% Czech (stupid) Paragraph Skip %
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+\usepackage{titlesec}
+\titleformat{\paragraph}
+  {\normalfont\normalsize\bfseries} % style
+  {\theparagraph}{1em}             % numbering
+  {}                                % before text
+\titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{1em}
+
+\newcommand*\justify{%
+  \fontdimen2\font=0.4em% interword space
+  \fontdimen3\font=0.2em% interword stretch
+  \fontdimen4\font=0.1em% interword shrink
+  \fontdimen7\font=0.1em% extra space
+  \hyphenchar\font=`\-% allowing hyphenation
+}
+
+% ---- Začátek dokumentu ----
+\begin{document}
+
+% Úvodní stránka
+\begin{titlepage}
+    \centering
+    {\Huge \textbf{HYPRSURFACE}\par}
+    \vspace{2cm}
+    {\Large Dokumentace k maturitní práci\par}
+    \vfill
+
+    \begin{center}
+    \begin{verbatim}
+                                          .+ .                           
+                                        .xx..                           
+                                        .;xx+.                           
+                                        .xxxx+.                          
+                                      .xxxxxx+.                         
+                                      .xxxxxxx+;.                        
+                                      +xxxxxxxx+.                        
+                                    .+xxxxxxxxx+.                       
+                                    .+++++xxxxxx++.                      
+                                    .+++++++++xxx++.                     
+                                  +...+++++++++xx++.                    
+                                  +++++..++++++++++++.                   
+                                +++++++++++++++++++++.                  
+                                ++++++++++++++++++++++;.                 
+                              ++++++++++++++++++++++++;.                
+                            .;+++++++++xxxxxxxxxxxxx+++:.               
+                            ;+++++xxxxxxxxxxxxxxxxxxxxxx.               
+                          .;+++xxxxxxxxxxxxxxxxxxxxxxxxxx.              
+                          .;xxxxxxxxxxxxxx;:xxxxxxxxxxxxxxx.             
+                        .:xxxxxxxxxxxx+..     xxxxxxxxxxxxx.            
+                        .:xxxxxxxxxxxx..       .xxxxxxxxxxxxx.           
+                      .:xxxxxxxxxxxx+.         .xxxxxxxxxxxxx.          
+                      :xxxxxxxxxxxxx...         .xxxxxxxxxxxxx.         
+                      ;xxxxxxxxxxxxxx..          .xxxxxxxxx..xxx.        
+                    ;xxxxxxxxxxxxxxx..           xxxxxxxxxxxx....       
+                  .;xxxxxxxxxxxxxxxx.           .xxxxxxxxxxxxxxx.       
+                  ;xxxxxxxxxxxxxxx:...          ..;xxxxxxxxxxxxxxx.     
+                  +xxxxxxxxxx:.... .  .                ..xxxxxxxxxxx.    
+                +xxxxxxx. .. .                            ..;xxxxxxx.   
+                +xxxx..                                        ..xxxxx.  
+              xxx.  .                                              .xx. 
+              ;.....                                                  ...
+    \end{verbatim}
+    \end{center}
+    % \includegraphics[width=0.8\textwidth]{nahled}
+    \vfill
+    
+    {\large Jáchym Otáhal\par} % Uprav jméno
+    {\large Gymnázium, Praha 4, Písnická 760\par}
+    {\large \today} % Uprav datum
+\end{titlepage}
+
+\pagenumbering{Roman}
+
+% Abstrakt
+\begin{abstract}
+Tato práce se zabývá vývojem dotykově orientovaného uživatelského rozhraní pro Arch Linux \autocite{ArchWiki},
+umožňujícího ovládání počítače pomocí dotykových gest a stylusu. Cílem projektu bylo vytvořit modulární,
+konfigurovatelný systém, který podporuje notifikace a dynamické přepínání pracovních prostředí. 
+Projekt je postaven na frameworku QuickShell, ve kterém je navrhnuto veškeré UI tohoto projektu.
+QuickShell \autocite{Quickshell} je rozhraní mezi deklarativním jazykem QML a operačním systémem.
+Pro správu oken, pracovních prostředí a klávesových zkratek používáme moderní dynamic manager a
+compositor Hyprland \autocite{HyprlandWiki2026}.
+Výsledkem je uživatelské prostředí, jehož účinnost a vzhled zbytečně nezatěžuje počítač. 
+\end{abstract}
+\newpage
+
+% Obsah
+\setcounter{tocdepth}{2} % Uprav úroveň nadpisů v obsahu
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+% Úvod
+\section{Úvod}
+V posledních letech se můžeme čím dál tím častěji setkávat s konceptem tzv. hybridních zařízení,
+která jsou kombinací mobilních a desktopových platforem a přináší jak výhody, tak nevýhody, obou
+zařízení. Jedním z těchto zařízení je Microsoft Surface, který je mým každodenním společníkem
+jak pro práci, programování a zápis poznámek, tak pro mé pokusy o kreslení. 
+Přestože toto zařízení využívám pravidelně, jsem nucen používat na některé aktivity operační
+systém Windows, který jsem již dávno na svém desktopu vyměnil za Linux. Tento rozdíl v prostředí
+mi velmi znepříjemňoval práci a obecně mé aktivity na laptopu. Z tohoto důvodu jsem se 
+rozhodl pro vytvoření optimálního systému, který by splňoval většinu mých požadavků na 
+dotykové používání a programování. 
+
+Cílem této práce je navrhnout a implementovat uživatelské rozhraní pro Hyprland \autocite{HyprlandWiki2026}
+na operačním systému Archlinux \autocite{ArchWiki}, které bude optimalizované pro dotykové ovládání a
+hardware Microsoft Surface, včetně optimalizovaného kernelu. Také se zaměřím na návrh UI v jazyce QML,
+díky kterému si zajistíme přizpůsobitelnost vzhledu a chování jednotlivých komponent. Mé UI bude zahrnovat
+základní moduly jako správce pracovních prostředí, spouštěč aplikací a správce spuštěných aplikací,
+časový widget, widget s~základními systémovými informacemi (hlasitost reproduktorů, úroveň jasu, stav nabití)
+a v neposlední řadě vyskakovací okno s~notifikacemi a následně centrum veškerých přišlých notifikací.
+Výsledkem by měl být systém, který je jednoduchý pro používání v~dotykovém režimu.
+
+V mé vlastní konfiguraci jsem nejdříve musel nastavit dual-boot, abych mohl navrhovat nový systém a
+zároveň jsem mohl svůj laptop používat. Protože jsem se rozhodl pro minimální instalaci se souborový systémem btrfs,
+musel jsem projít celou instalaci čistě přes terminál a bez používání TUI\footnote{TUI (Terminal User Interface) je 
+aplikace s uživatelským rozhraním výhradně v terminálu.} 
+aplikací, které by mi mohly ulehčit instalaci. Při samotné instalaci jsem musel ještě stáhnout
+upravený Surface kernel, jenž mi zprovoznil nějaké funkce, které nejsou základně v Linux kernelu.
+Po dokončení instalace jsem ještě potřeboval nastavit grafické rozhraní a Snapper
+\autocite{SnapperUltimateSnapshot}, který mi dovolil verzovat celý systém, abych se mohl při nepovedené 
+konfiguraci vrátit na místo v čase, kdy systém ještě nebyl rozbitý.
+
+Tato dokumentace shrnuje důvody výběru různých částí systému a jak byly tyto dílky složeny dohromady, aby
+tvořily jednotný systém. Nejdříve pohovořím o Linux straně tohoto projektu, jako je například samotná
+distribuce, compositor a toolkit pro vytváření UI. Poté se přesunu na stránku každodenního programátora a
+vysvětlím, jaká je architektura systému a jak se nadále dá systém upravovat a rozšiřovat o další UI prvky.
+Také vysvětlím nástroje pužité pro vývoj a proč jsem si je vybral. Před úplným koncem této části
+ještě dodám nedostatky, které se mi nepodařilo zprovoznit a nebo na ně nezbyl čas. Text bude uzavřen
+dodatkem, jenž se bude zabývat prvky co budou v~budoucnu přidány, aby tvořily můj vysněný systém pro
+hybridní zařízení.
+
+
+% Linux dokumentace
+\newpage
+\section{Linux dokumentace}
+
+\subsection{I use Arch BTW}
+Archlinux \autocite{ArchWiki} je stavebním kamenem tohoto projektu a důvody pro jeho výběr jsou vcelku jasné. Jednou z 
+největších výhod je, že se dá nainstalovat jako velmi bare-bones\footnote{Systém je bare-bones, když je možnost
+si ho nainstalovat s jen pouze nejnutnějšími částmi systému a můžete si vybrat veškeré systémové moduly,
+aniž by se nástroje pro stejnou věc musely instalovat vícekrát.} systém, který následné
+rozšíříme jen o nejnutnější aplikace. Výhoda zde spočívá v nízké náročnosti běhu počítače, a tudíž i
+delší životnosti baterie.
+
+Další výhodou je rolling-release model Archlinuxu, který nám přináší ty nejnovější verze driverů a aplikací,
+hned jak jsou vydány.
+To nám umožňuje vždy využívat výhod těch nejnovější balíčků. Zároveň nám přináší pár nevýhod v tvaru
+občasné nestability, která čas od času může způsobit, že před používáním počítače musíme něco spravit.
+
+V neposlední řadě je tu ještě AUR \autocite{AURHome}, což je veliká knihovna balíčků, které jsou spravovány Archlinux
+komunitou. Tož nám přináší obrovskou výhodu v získávání aplikací, které jsou normálně náročnější na instalaci
+v jiných Linux distribucích a nejsou centrálně kontrolovány některým z package managerů\footnote{Packagemanager je centrální systémová
+aplikace, která nám dovoluje instalovat / upravovat / updatovat / odinstalovávat balíčky (aplikace).}.
+V našem projektu používáme AUR helper yay (Yet Another Yogurt) \autocite{joJguerYay2026}, který spolupracuje s
+package managerem pacman a zároveň nám dovoluje instalovat aplikace z AUR repozitáře, jenž je využit na instalace
+některých z našich hlavních částí systému.
+
+A jako třešnička na dortu je tu Archwiki \autocite{ArchWiki}, což je jedna z největších wiki stránek pro Linux obecně.
+Dozvíte se zde, jak vše nastavit, co za aplikace si vybrat, a také, jak je následně nainstalovat. Dále
+obsahuje spoustu hardwarově specifických rad, přehledů a informací o funkčnosti různých driverů a různých částí,
+např. webkamera, digitální pero, GPU a Wi-Fi. \href{https://wiki.archlinux.org/title/Microsoft_Surface_Pro_9}{Zde můžete,
+ku příkladu, najít, co funguje na Microsoft Surface Pro 9.}
+
+
+\subsection{Jak jen budeme ovládat naše okna? No jó, Hyprland}
+
+% Lépe popsat co znamená co
+\subsubsection{Co je window manager a jeho typy}
+Window manager je software, který, jak již název napovídá, spravuje okna, což pro nás znamená, že určuje kdy a kde se okno objeví, jaké atributy 
+má a jakou velikost má. Nadále zpracovává veškeré zvětšování / zmenšování, automatické snappování a tilování a další
+věci, které s okny normálně můžeme dělat. Window managery se dále dělí na stacking (floating), tiling a dynamické.
+\autocite{WhatTilingWindow}
+Stacking je styl, který se dá nazvat jako ten \uv{typický}, protože je viditelný např. v Microsoft Windows, macOS a 
+také ze základu ve většině velkých Linux distrech, jako jsou třeba Linux Mint, Ubuntu, Fedora a další. Tiling manager, na druhou
+stranu, není až tak častý a je používán spíše power-usery\footnote{Power‑user (také pavrjůzr) je uživatel, který vyniká ve využívání pokročilých
+funkcí softwaru či operačního systému, těmito často jsou např. skripty a klávesové zkratky. Také bývá často obeznámen
+s interní funkcí softwaru co používá.} pro jeho možnost si nastavit zkratky pro pohybování okny a obecně
+rychlejším přesunem mezi okny. Nakonec tu je dynamický window manger, který kombinuje oba předchozí a dovoluje nám zároveň
+se držet v tilech a nebo se od nich uvolnit a mít jedno či více oken floating.
+
+\subsubsection{Ten náš Hyprland}
+Hyprland \autocite{HyprlandWiki2026} je dynamický window manager, který jsem vybral pro jeho velikou modularitu, dobrou dokumentaci, posazení na
+wayland protokolu, a také protože s ním již osobně mám zkušenosti. Hlavní výhodou je knihovna pluginů, jež můžeme 
+nainstalovat pro větší konfigurovatelnost, a nebo pro přidání funkcí, které v základu nebyly vůbec zamýšleny. V našem
+systému jsou díky tomuto přidány lišty u oken. Také jsem chtěl, aby se dal systém ovládat gesty, ale bohužel tento plugin
+je aktuálně rozbitý, kvůli změně stylu psaní některých konfigurací pro Hyprland.
+
+
+\subsection{Co na UI? QuickShell!}
+Pro UI jsem se rozhodl pracovat s novým systémem, který se objevil nedávno a rychle se rozšířil mezi uživatele Linuxu,
+kteří si rádi upravují vzhled Linuxu podle jejich představ. Tímto systémem je právě QuickShell \autocite{Quickshell}.
+Jeho hlavní výhodou i nevýhodou je jeho upravitelnost. Proč ale říkám i nevýhodou? Protože pokud si chcete přidat do
+své konfigurace něco, co někdo má ve své konfiguraci, obvykle to znamená, že to musíte přeprogramovat, protože každý
+má svůj vlastní styl jak získávat různé informace ze systému. Další nevýhodou je jeho stav vývoje. Jelikož systém je
+stále ještě v alfa stádiu, znamená to pro nás, že se často mění, jak věci fungují, a pak se musí přepisovat na nový
+styl zpracování. Naopak jeho výhodou je využití deklarativního jazyka QML \autocite{QtDocumentation}, který
+si dovoluje uživatelské rozhraní upravit do všech detailů, jakým je třeba i samotná efektivita systému. Další výhoda
+spočívá ve flexibilitě oproti ostatním systémům, jako jsou například Waybar \autocite{rouillardAlexaysWaybar2026}, 
+který umí dělat jen lišty, nebo Wofi \autocite{ScooptaWofiThis},
+jež zas umí jen zobrazovat seznam věcí s možností výběru, jejichž vzhled je prakticky jediné, co jde pořádně upravovat,
+a navíc se dají dělat jen v CSS.
+
+% Programátorská dokumentace
+\newpage
+\section{Programátorská dokumentace}
+
+\subsection{Použité technologie a nástroje}
+
+\subsubsection{Jazyky}
+\paragraph{QML}
+V projektu je použito QML, protože je kterým se píše pro QuickShell. \autocite{QtDocumentation}
+
+\paragraph{Lua}
+Lua slouží jako skriptovací jazyk pro konfigurační soubory Hyprland a neovim, což umožňuje dynamické přizpůsobení 
+chování compositoru, jeho pluginů a textového editoru.
+
+\paragraph{Shell}
+Shellové skripty (Bash/Zsh) umisťuji do složky \texttt{\textasciitilde/.scripts/}. Jsou zodpovědné za jednoduché
+práce a automatizaci rutinních úkolů. 
+
+\paragraph{Python}
+Python využívám pro některé utilitní funkce, které dělají například jen úpravu textu.
+
+\subsubsection{Frameworky a nástroje}
+\paragraph{Hyprland}
+Hyprland je modulární compositor založený na Wayland, který poskytuje základní funkce jako tiling, workspace management
+a podporu gest. \autocite{HyprlandWiki2026}
+
+\paragraph{Quickshell}
+Quickshell je rozšíření pro Hyprland, které přidává rychlý přístup k aplikacím a umožňuje jednoduché přepínání mezi
+módy (desktop/touch). \autocite{Quickshell}
+
+\subsubsection{Verzovací systém}
+K projektu používám Git, což umožňuje sledovat historii změn a v případě rozbití se vráti zpět o verzi, či více.
+
+\subsubsection{Vývojové prostředí}
+Při vývoji jsem využil textového editoru neovim, ze kterého jsem si udělal plnmohodnotné IDE s LSP a dalšími funkcemi
+optimálními pro development. \autocite{Neovim}
+
+
+\subsection{Architektura systému}
+V této části bude hlavně popis uživatelského rozhraní, protože projekt se zabýval zejména jeho vývojem.
+Systém se skládá ze dvou hlavních prvků, těmi jsou Hyprland a QuickShell. Ze začátku vysvětlím, jaké je rozložení
+souborů pro Hyprland a pak jaké je rozložení souborů pro QuickShell. U většiny souborů bude vysvětlení, jak je dále
+upravovat a co do nich patří.
+
+\subsubsection{Hyprland}
+Soubory pro konfiguraci Hyprlandu jsou k nalezení ve složce \verb|~/.config/hypr/|. Zde se nalézají veškeré konfigurační
+soubory pro Hypr ekosystém a dovolují nám upravovat, jak se nám chová systém, z uživatelské strany. 
+
+\begin{center} \fbox{ \begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+  [\textasciitilde/.config/hypr/
+  [hyprland/
+    [animations.conf (\ref{animations.conf})]
+    [autostart.conf (\ref{autostart.conf})]
+    [decorations.conf (\ref{decorations.conf})]
+    [input.conf (\ref{input.conf})]
+    [keybinds.conf (\ref{keybinds.conf})]
+    [look.conf (\ref{look.conf})]
+    [plugins.conf (\ref{plugins.conf})]
+    [windows-workspaces.conf (\ref{windows-workspaces.conf})]
+  ]
+  [hyprland.conf (\ref{hyprland.conf})]
+  [hypridle.conf (\ref{hypridle.conf})]
+  [hyprlock.conf (\ref{hyprlock.conf})]
+]
+\end{forest}} \end{center}
+
+\paragraph{hyprland.conf}
+\label{hyprland.conf}
+Zde nastavujeme globální proměnné a načítáme další konfigurační soubory, které definují hlavní programy a prostředí.
+
+\begin{itemize}
+  \item \textbf{Proměnné} určují například výchozí terminál, prohlížeč souborů nebo
+      klávesu \texttt{\justify \textdollar mainMod}.
+    \begin{itemize}
+      \item Pokud chcete změnit výchozí terminál, musíte upravte řádek na \texttt{\justify \textdollar terminal = alacritty (nebo jiný)}.
+    \end{itemize}
+      \item \textbf{Source sekce}: importuje další soubory.
+    \begin{itemize}
+      \item Pokud chcete přidat nový soubor, přidejte:\\ \texttt{\justify source = \textasciitilde/.config/hypr/hyprland/novy\_conf.conf}.
+    \end{itemize}
+  \item \textbf{Programs} – proměnné jako \texttt{\justify \textdollar terminal}, \texttt{\justify \textdollar fileManager} a podobně,
+      které se používají ve zkratkách.
+    \begin{itemize}
+      \item Např. \texttt{\justify bind = \textdollar mainMod, return, exec, \textdollar terminal} – pokud chcete jiný terminál, 
+          změňte hodnotu \texttt{\justify \textdollar terminal} v souboru.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{animations.conf}
+\label{animations.conf}
+Zde definujeme animace, které Hyprland používá při přepínání pracovních ploch, okén a podobně.
+
+\begin{itemize}
+  \item \textbf{bezier}: specifikuje body, které tvoří Bézierovu křivku, po jež se okno pohybyje.
+  \item \textbf{animation}: přiřazuje k různým akcím rozdílné animace 
+    \begin{itemize}
+      \item \verb|animation = NAME, ONOFF, SPEED, CURVE [,STYLE]|
+      \item Pokud chcete, aby se okna rozvíjela rychleji, změňte SPEED na jinou hodnotu v decisekundách.
+      \item Pro změnu typu křivky, nahraďte \texttt{\justify almostLinear} například \texttt{\justify backAndForth}
+        nebo \texttt{\justify quick}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{autostart.conf}
+\label{autostart.conf}
+Zde specifikujeme programy, které se spustí po přihlášení do Hyprlandu.
+
+\begin{itemize}
+  \item \textbf{exec‑once}: program spustí jen jednou (např. \texttt{\justify sh \textasciitilde/.scripts/wofi-wallpaper-selector.sh}).
+  \item \textbf{exec}: program spustí při každém startu.
+    \begin{itemize}
+      \item Přidejte nový řádek \texttt{\justify exec-once, waybar} pro spouštění Waybar.
+      \item Odeberte řádek \texttt{\justify exec, wayscriber} pokud nechcete spouštět Wayscriber.
+      \item Přidejte skripty v lokální složce \texttt{\justify \textasciitilde/.scripts/}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{decorations.conf}
+\label{decorations.conf}
+Zde nastavujeme vzhled oken – zaoblení, rozmazání, průhlednost, stíny.
+
+\begin{itemize}
+  \item \texttt{\justify rounded = 10} – poloměr zaoblení hran.
+  \item \texttt{\justify blur = 6} – úroveň rozmazání.
+  \item \texttt{\justify opacity = 0.8} – průhlednost okna.
+  \item \texttt{\justify shadow = true} – povolení stínu.
+    \begin{itemize}
+      \item Pokud chcete méně zaoblení, snižte \texttt{\justify rounded} na 5.
+      \item Pro větší rozmazání změňte \texttt{\justify blur} na 8.
+      \item Pro úplné vypnutí stínu nastavte \texttt{\justify shadow = false}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{input.conf}
+\label{input.conf}
+Zde konfigurujeme nastavení klávesnice a gest.
+
+\begin{itemize}
+  \item \texttt{\justify kb\_layout = us, cz} – podpora klávesnice US a CZ.
+  \item \texttt{\justify sensitivity = 0} – citlivost gest (0 – výchozí).
+  \item \texttt{\justify follow\_mouse = 1} – okna sledují kurzor.
+    \begin{itemize}
+      \item Pro změnu rozložení na francouzskou klávesnici přidejte \texttt{\justify kb\_layout = fr}.
+      \item Pokud chcete mít aktivovaný NumLock hned se spuštěním, změňte \texttt{\justify numlock\_by\_default = true}.
+      \item Zvýšení citlivosti gest změňte \texttt{\justify sensitivity = 1}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{keybinds.conf}
+\label{keybinds.conf}
+Zde definujeme klávesové zkratky pro ovládání okna a systému.
+
+\begin{itemize}
+  \item \texttt{\justify \$mainMod = SUPER} – hlavní modifikátor (klávesa Windows).
+  \item \texttt{\justify bind = \$mainMod, return, exec, \$terminal} – otevření terminálu.
+  \item \texttt{\justify bind = \$mainMod, L, exec, hyprlock \&} – zamknutí.
+    \begin{itemize}
+      \item Pro změnu hlavního modifikátoru na Alt, změňte \texttt{\justify \$mainMod = ALT}.
+      \item Přidejte novou zkratku: \texttt{\justify bind = \$mainMod, T, exec, kitty}.
+      \item Upravte existující zkratku změnou sekvence kláves, např. \texttt{\justify bind = \textdollar mainMod SHIFT, Q, killactive,}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{look.conf}
+\label{look.conf}
+Zde nastavujeme vzhled okna – mezery, hrany, barvy.
+
+\begin{itemize}
+  \item \texttt{\justify gaps\_in = 5}, \texttt{\justify gaps\_out = 20} – vnitřní a vnější mezery.
+  \item \texttt{\justify border\_size = 2} – šířka rámečku.
+  \item \texttt{\justify col.active\_border} a \texttt{\justify col.inactive\_border} – barvy hran.
+    \begin{itemize}
+      \item Pro větší mezery změňte \texttt{\justify gaps\_in = 10}.
+      \item Pokud chcete odbarvit neaktivní okno, upravte \texttt{\justify col.inactive\_border = \#404040}.
+      \item Pro změnu barvy aktivních okien nahraďte hex‑kód \texttt{\justify \#ff0000}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{plugins.conf}
+\label{plugins.conf}
+Zde nastavujeme různá rozšíření, která nám mohou ulehčit práci.
+
+\begin{itemize}
+  \item \texttt{\justify hyprbars ... \{enabled = true ... \}} určuje jestli je plugin hyprbars zapnutý.
+  \item \texttt{\justify hyprbars ... \{hyprbars-button = rgb(ff4040), 15, , hyprctl dispatch killactive ... \}} nestavuje
+    jaká tlačítka jsou dostupná a co mají za funkce.
+  \begin{itemize}
+    \item Pro změnu baru na neprůhledný, přepište \texttt{\justify bar\_color = rgba(000000CC)} na jakoukoliv jinou neprůhlednou barvu.
+  \end{itemize}
+\end{itemize}
+
+\paragraph{windows-workspaces.conf}
+\label{windows-workspaces.conf}
+Zde nastavujeme, které monitory a workspace k sobě patří.
+
+\begin{itemize}
+  \item \texttt{\justify workspace = 1, monitor:eDP-1} – přiřadí workspace 1 k monitoru eDP‑1.
+  \begin{itemize}
+    \item Pro změnu přiřazeného monitoru: \texttt{\justify workspace = 1, monitor:HDMI-1}
+  \end{itemize}
+\end{itemize}
+
+(Pokud chcete zjistit jak se monitor jmenuje pro váš systém, můžete spustit command \texttt{\justify hyprctl monitors}
+a Hyprland vám vrátí veškeré připojené monitory)
+
+\paragraph{hypridle.conf}
+\label{hypridle.conf}
+Zde nastavujeme chování \emph{Hypridle} – démonu, který řídí automatické zamykání a šetření energie.
+
+\begin{itemize}
+  \item \textbf{General sekce}: připojuje externí skripty při zamknutí (\verb|lock|), úpravu jasu a přerušování \verb|numlock|.
+    \begin{itemize}
+      \item Přidejte nebo upravte řádek \verb|lock = loginctl lock-session|v sekci
+        \textit{general} – změna příkazu po zamknutí.
+      \item Upravte časové limity (timeout) v listenerech, např. \verb|timeout 300|, nebo přidejte 
+          nový listener s jiným příkazem.
+    \end{itemize}
+  \item \textbf{Listener sekce}: řídí akce po překročení zadaného času – např. snižování jasu, zamykání obrazovky nebo vypnutí.
+    \begin{itemize}
+      \item Časové limity (\verb|timeout 300|) změňte na požadovanou dobu v sekundách.
+      \item Změňte příkaz \verb|exec, notify-send …| podle potřeby.
+    \end{itemize}
+  \item \textbf{Poznámka}: Po úpravě souboru znovu načtěte Hypridle příkazem \verb|hyprctl reload| nebo restartujte systém.
+\end{itemize}
+
+\paragraph{hyprlock.conf}
+\label{hyprlock.conf}
+
+Zde nastavujeme vzhled a chování \emph{Hyprlock} – zamykací obrazovky.
+
+\begin{itemize}
+  \item V souboru jsou momentálně testovací obrázky, ale lze zde definovat např. \texttt{\justify locktime}, \texttt{\justify font}, \texttt{\justify blur}, \texttt{\justify image}.
+    \begin{itemize}
+      \item Přidejte řádek \texttt{\justify blur = true} nebo \texttt{\justify font = NotoSans, 18} a upravte dle potřeby.
+    \end{itemize}
+  \item Po úpravě souboru restartujte Hyprlock nebo znovu načtěte konfiguraci.
+\end{itemize}
+
+
+
+\subsubsection{QuickShell}
+
+\begin{center} \fbox{ \begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+  [\textasciitilde/.config/quickshell/
+  [shell.qml (\ref{shell.qml})]
+  [Bar.qml (\ref{Bar.qml})]
+  [Panels/
+    [RightSidePanel.qml (\ref{RightSidePanel.qml})]
+  ]
+  [Popups/
+    [AppLauncher.qml (\ref{AppLauncher.qml})]
+    [NotifCenter.qml (\ref{NotifCenter.qml})]
+    [...]
+  ]
+  [Services/
+    [Design.qml (\ref{Design.qml})]
+    [NotificationService.qml (\ref{NotificationService.qml})]
+    [Time.qml (\ref{Time.qml})]
+    [...]
+  ]
+  [Widgets/
+    [AppLauncherButton.qml (\ref{AppLauncherButton.qml})]
+    [ClockWidget.qml (\ref{ClockWidget.qml})]
+    [Workspaces.qml (\ref{Workspaces.qml})]
+    [...]
+  ]
+]
+\end{forest}} \end{center}
+
+\paragraph{shell.qml}
+\label{shell.qml}
+Tento soubor je hlavní inicializační soubor pro QuickShell. Zde se spouští všechny moduly, které budeme dále používat.
+Pokud by se přidával nový modul, jehož závislost nespočívá v žádném z již inicializovaných modulů.
+
+\paragraph{Bar.qml}
+\label{Bar.qml}
+Tento soubor je kmenovou částí pro lištu. Zde jsou spouštěny veškeré permanentně viditelné widgety.
+Nejdříve se tato lišta spustí na každém monitoru, jak je znázorněno v \ref{Bar.qml 0}. Poté se nastaví,
+kde je lišta připnutá. Poté si pomocí souboru Design.qml (\ref{Design.qml}) nastavíme barvy pro naši lištu.
+Dále inicializujeme jednotlivé widgety, které jsou rozděleny do tří částí lišty (levá, střed, pravá),
+jak lze vidět v kódu \ref{Bar.qml 1}.
+
+\paragraph{Design.qml}
+\label{Design.qml}
+Design je Singleton, což znamená, že když na něj voláme vícekrát, vždy zůstává jedním a tím samým objektem.
+Zde jsou proměnné pro nastavení většiny funkcí systému. Dá se zde nastavit jak barvy, tak intervaly různých
+časovačů, nebo i viditelnost samostatných widgetů. Data v tomto souboru by měla být manipulovaná výhradně z
+tohoto souboru.
+
+Tato část je velmi důležitá, z toho důvodu je celná dostupná v části \ref{Design.qml 0}.
+
+\paragraph{Workspaces.qml}
+\label{Workspaces.qml}
+Zde se nachází widget pro zobrazování aktivních pracovních prostředích v Hyprlandu. Zde je použito API, které je 
+zabudované přímo do QuickShellu pro komunikaci s Hyprlandem. Nejdříve je zde specifikováno, kolik pracovních prostředí
+chceme zobrazovat. Poté zjistíme jaká jsou aktivní a podle toho rozhodneme jejich vzhled. Také zde nastavujeme, jak se
+mají tlačítka pracovních prostředí chovat, když na ně najedeme myší a nebo je stiskneme.
+
+\paragraph{ClockWidget.qml}
+\label{ClockWidget.qml}
+Hodinový widget je velmi jednoduchý. Je složený pouze z jednoho obdélníku a má dva módy. Jeden mód je ukazování aktuálního
+času pomocí Time.qml (\ref{Time.qml}), nebo ukazuje dnešní datum, také na základě textového řetězce z Time.qml (\ref{Time.qml}).
+
+\paragraph{Time.qml}
+\label{Time.qml}
+Tento modul je také Singleton a dává nám aktuální čas podle operačního systému. Nastavení formátu, ve kterém je textový
+řetězec zobrazen, je znovu obsaženo v Design.qml (\ref{Design.qml}).
+
+\paragraph{AppLauncher.qml}
+\label{AppLauncher.qml}
+Tento modul je určen pro spoučtění aplikací. Modul je postaven jako samostatné okno, které je nastavené pro wayland v 
+\verb|WlrLayer.Overlay|. Tohle je jedna z náročnějších částí, kde je implementováno ukládání frekvence otevření aplikací
+a také jeho přečtení. Tato část byla převážně převzta z xenon-shell od MannuVilasara a následně upravena na nové přidané funkce.
+\autocite{singhMannuVilasaraXenonshell2026} Zároveň zde při vyhledávání filtrujeme podle zadané fráze ve vyhledávacím poli.
+Následně pak aplikace zobrazujeme jako tlačítka s ikonou a názvem aplikace. Znovu se zde velká část designu dá nastavit v 
+Design.qml (\ref{Design.qml}). Tento modul je spouštěn již v shell.qml (\ref{shell.qml}), aby se nemusel opakovaně spouštět.
+Jeho otevření se dá vyvolat změněním viditelnosti v StatusSaver.qml. Tato proměnná je zároveň napojena na ipc call, který
+se dá spustit kdekoliv z systému, což nám dovoluje např. nastavit klávesovou zkratku v Hyprlandu pro otevření tohoto modulu.
+
+\paragraph{AppLauncherButton.qml}
+\label{AppLauncherButton.qml}
+Zde vytváříme jednoduchý widget, který nám dovoluje otevřít spouštěč aplikací (\ref{AppLauncher.qml}) přímo z displaye, aby když je zařízení v 
+tablet módu, tak se daly spouštět další aplikace.
+
+\paragraph{RightSidePanel.qml}
+\label{RightSidePanel.qml}
+Zde je znovu tvořeno nové okno, stejně jako v  AppLauncher.qml (\ref{AppLauncher.qml}). Vytváříme zde další okno, protože tento
+panel je nastaven tak, aby zabíral místo jen okolo widgetů, které do něj vložíme. Toho jsme dosáhli pomocí \verb|Region|
+\ref{RightSidePanel.qml 0} a nastavení jeho pozice a velikosti podle widgetů. Každý widget musí mít explicitně vyjádřeno,
+kde je na monitoru, aby nám fungovalo zobrazování. Viz kód \ref{RightSidePanel.qml 0}.
+Pomocí tohoto panelu zobrazujeme NotifCenter.qml (\ref{NotifCenter.qml}) a jsme schopni nastavit, aby se otevíralo s akcemi.
+
+\paragraph{NotificationService.qml}
+\label{NotificationService.qml}
+Tento modul je služba, která nám spravuje veškeré notifikace, které přišly do systému. Je rozdělen do dvou souborů, ale pro
+používání a stavění na této službě nám stačí pouze tento, protože drží pole se všemi oznámeními. Tento modul vlastní dvě pole,
+jedno drží notifikace, dokud nejsou zavřeny pomocí NotifCenter.qml (\ref{NotifCenter.qml}), a druhý obsahuje aplikace pouze po
+dobu, která je připsaná u samotné notifikace, to se zejména hodí pro vyskakovací okna. Dále jsou tu funkce pro zavíraní daných
+notifikací a nebo jen vyskakovacích oken.
+
+\paragraph{NotifCenter.qml}
+\label{NotifCenter.qml}
+Notifikační centrum je modul, který nám zobrazuje veškerá oznámení od spuštění systému. Je možné upravit jednoduché prvky,
+jako je ku příkladu šířka, nebo poloměr hran, pomocí Design.qml (\ref{Design.qml}). Centrum automaticky kontroluje, jestli
+je pole s notifikacemi prázdné, pokud ano, tak vloží prázdný box s nápisem \verb|THERE ARE NO NEW NOTIFICATIONS|, jinak 
+zobrazí veškeré notifikace co jsou dostupné.
+
+
+\clearpage
+\subsection{Popis důležitých částí kódu}
+\subsubsection{Spouštění lišty na všech oknech - Bar.qml}
+\label{Bar.qml 0}
+\begin{lstlisting}
+Scope {
+  Variants {
+    model: Quickshell.screens
+
+    PanelWindow {
+      id: barWindow
+      ...
+      screen: modelData
+      ...
+    }
+  }
+}
+\end{lstlisting}
+
+\clearpage
+\subsubsection{Inicializace widgetů z lišty - Bar.qml}
+\label{Bar.qml 1}
+\begin{lstlisting}
+        ...
+        // Left
+        RowLayout {
+          anchors {
+            left: parent.left
+            rightMargin: Design.barMargins
+            leftMargin: Design.barMargins
+            verticalCenter: parent.verticalCenter
+          }
+          spacing: 10
+
+          AppLauncherButton {
+            visible: Design.workspacesVisible
+            Layout.preferredHeight: Design.widgetHeight
+          }
+          
+          Workspaces {
+            visible: Design.workspacesVisible
+            Layout.preferredHeight: Design.widgetHeight
+          }
+          ...
+        }
+        // Center
+        RowLayout {
+          anchors {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+            leftMargin: 12
+            rightMargin: 12
+          }
+          spacing: 10
+          ...
+        }
+        // Right
+        RowLayout {
+          anchors {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: Design.barMargins
+            leftMargin: Design.barMargins
+          }
+          spacing: 10
+          layoutDirection: Qt.RightToLeft
+          ...
+        }
+        ...
+\end{lstlisting}
+
+\clearpage
+\subsubsection{Veškeré nastavovací proměnné - Design.qml}
+\label{Design.qml 0}
+\begin{lstlisting}
+pragma Singleton
+
+import Quickshell
+import QtQuick 
+
+
+Singleton {
+  // color pallete
+  property color colBg: "#1a1b26"
+  property color colFg: "#a9b1d6"
+  property color colMuted: "#444b6a"
+  property color colCyan: "#0db9d7"
+  property color colBlue: "#7aa2f7"
+  property color colYellow: "#e0af68"
+  property color transparent: "#00000000"
+
+  // time format
+  property string timeFormat: "hh:mm:ss"
+
+  // font settings
+  property string fontFamily: "JetBrainsMono Nerd Font"
+  property int fontSize: 18
+
+  // bar settings
+  property int barAdd: 4
+  property int widgetsSub: 4
+  property int barHeight: fontSize * 2 + barAdd
+  property int widgetHeight: barHeight - widgetsSub
+  property int barMargins: (barHeight - widgetHeight) / 2
+  property int widgetRadius: fontSize * (2/3)
+
+  // launcher settings
+  property real launcherOpacity: 0.9
+
+  // notif server settings
+  property bool notifImageSupport: false        /* not implemented yet */
+
+  // notif popup settings
+  property real notifPopupWidthByMonitorWidthRatio: 1/4
+  property real notifPopupOpacity: 0.9
+  property int notifPopupTimeout: 5000          /* time in ms */
+  property int notifPopupIconSize: 40
+  property int notifPopupMaxCharacters: 300
+
+  // notif center settings
+  property real notifCenterWidthByMonitorWidthRatio: 1/3
+  property real notifCenterWidthByMonitorHeightRatio: 1/2
+  property int notifCenterRadius: 20
+  property int notifCenterMargins: 10
+
+  // widget toggles
+  property bool clockWidgetVisible: true
+  property bool appWorkspacesButtonVisible: true
+  property bool statusWidgetVisible: true
+  property bool virtKeyboardButtonVisible: false
+  property bool workspacesVisible: true
+  property bool workspaceMoverButtonVisible: true
+
+  // check for changes settings
+  property bool checkBrightness: true
+  property int checkBrightnessInterval: 500
+  property bool checkBattery: true
+  property int checkbatteryInterval: 5000  
+}
+\end{lstlisting}
+
+\clearpage
+\subsubsection{Filtr aplikací podle četnosti a fráze - AppLauncher.qml}
+\label{AppLauncher.qml 0}
+\begin{lstlisting}
+      ...
+
+      property var filteredApps: {
+        var apps = DesktopEntries.applications.values;
+        var q = query.toLowerCase().trim();
+        var visible = apps.filter((app) => {
+            return !app.noDisplay;
+        });
+        if (q === "") {
+            visible.sort((a, b) => {
+                var usageA = getUsage(a.id);
+                var usageB = getUsage(b.id);
+                if (usageA !== usageB)
+                    return usageB - usageA;
+                return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+            });
+            return visible;
+        }
+        var matches = visible.filter((app) => {
+            return app.name.toLowerCase().includes(q);
+        });
+        matches.sort((a, b) => {
+            var usageA = getUsage(a.id);
+            var usageB = getUsage(b.id);
+            if (usageA > 0 || usageB > 0) {
+                if (usageA !== usageB)
+                    return usageB - usageA;
+            }
+            var nameA = a.name.toLowerCase();
+            var nameB = b.name.toLowerCase();
+            if (nameA === q && nameB !== q)
+                return -1;
+            if (nameB === q && nameA !== q)
+                return 1;
+            var startA = nameA.startsWith(q);
+            var startB = nameB.startsWith(q);
+            if (startA && !startB)
+                return -1;
+            if (!startA && startB)
+                return 1;
+            return nameA.localeCompare(nameB);
+        });
+        return matches;
+    }
+
+    ...
+\end{lstlisting}
+
+\clearpage
+\subsubsection{Určování pozice a velikosti masky - RightSidePanel.qml}
+\label{RightSidePanel.qml 0}
+\begin{lstlisting}
+...
+
+PanelWindow {
+
+  ...
+
+  WlrLayershell.layer: WlrLayer.Overlay
+  mask: notifBoxMask
+
+  ...
+
+  Region {
+    id: notifBoxMask
+
+    regions: [
+      Region {
+        x: notifBox.x
+        y: notifBox.y
+        width: root.notifBoxWidth
+        height: root.notifBoxHeight
+      }
+    ]
+  }
+
+  NotifCenter {
+    id: notifBox
+
+    x: (root.notifBoxOpen || notifHandler.hovered) ? root.width - root.notifBoxWidth - Design.notifCenterMargins: root.width - root.peekWidth
+    width: root.notifBoxWidth
+    height: root.notifBoxHeight
+
+    ...
+  }
+
+  ...
+}
+
+...
+\end{lstlisting}
+
+
+
+% Uživatelská dokumentace
+\newpage
+\section{Uživatelská dokumentace}
+\subsection{Instalace HYPRSURFACE}
+Pro instalaci HYPRSURFACE musíte předem stáhnout a nainstalovat Arch linux, my toho dosáhneme pomocí distribuci s názvem
+CachyOS. \autocite{CachyOSBlazinglyFast} Stáhneme si ji na \href{https://cachyos.org/download/}{jejich stránkách}, 
+ujistěte se, že si stahujete desktop edici. Dále postupujte podle instukcí na \href{https://wiki.cachyos.org/installation/installation_on_root/}
+{wiki CachyOS} pro stažení desktop edice s Hyprland.
+
+Když se dostanete do systému, otevřete si pomocí klávesové zkratky \verb|SUPER+Q| terminál a spusťte firefox. Ve firefoxu si najděte
+tento projekt na githubu. Zde si najděte v README instrukce, pro to co zadat do terminálu, aby se systém nainstaloval. Poté už jen
+počkejte až se systém nainstaluje, tato akce může trvat několik minut, a automaticky restartuje.
+
+\subsection{Používání HYPRSURFACE}
+Horní lišta v základním nastavení obsahuje 6 widgetů.
+\newline
+\begin{center}
+\includegraphics[scale=0.15]{topBarScreenshot}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Spouštěč aplikací:} je v levém horním rohu s logem Archlinuxu a funguje jako přepínač stavu aplikačního spouštěče.
+    Dále si souštěč více rozvedeme.
+  \item \textbf{Pracovní prostředí:} jsou možné vidět také v levé části lišty. Světle svítí to prostředí, které je právě viditelné, a 
+    ta co obshují nějakou aplikaci, ale nejsou vidět, mají jen modrý akcent textu.
+  \item \textbf{Spuštěná okna:} zde se dá cíleně přepínat mezi otevřenými okny a dají se zde i zavírat.
+    \newline
+    \begin{center}
+      \includegraphics[scale=0.35]{runningAppsMenuScreenshot}
+    \end{center}
+  \item \textbf{Přesouvač oken mezi prostředími:} je overlay, který nám dovoluje přesunout aplikaci mezi rozdílnými pracovními
+    prostředími.
+    \newline
+    \begin{center}
+      \centering
+      \includegraphics[scale=0.16]{appMoverScreenshot}
+    \end{center}
+  \item \textbf{Hodiny:} zde se zobrazují hodiny, pro přepnutí na datum stačí na widget kliknout.
+    \begin{center}
+      \includegraphics[scale=0.56]{dateWidgetScreenshot}
+    \end{center}
+
+  \item \textbf{Status:} je více věcí v jednom widgetu, ovládat se dá pouze zvuk. Kliknutím na ikonku reproduktoru se dá přepínat mezi
+    stádiem vypnutí a zapnutí zvuku.
+\end{itemize}
+
+Poté zde máme ještě vyskakovací okna.
+
+\begin{itemize}
+  \item \textbf{Vyskakovací notifikace:} zobrazují aktuální notifikace na krátkou dobu, dají se zde odkliknout pomocí křížku vpravo
+    nahoře. První řádek je název aplikace, druhý je shrnutí a třetí je obsah notifikace. Někdy se může zobrazovat méně řádků, 
+    protože aplikace ne vždy obsáhne všechny pole, z toho důvodu jsou někdy schované.
+    \newline
+    \begin{center}
+      \includegraphics[scale=0.36]{notifPopupScreenshot}
+    \end{center}
+
+  \item \textbf{Notifikační centrum:} obsahuje veškerá notifikace, každá má stejné specifikace jako u vyskakovací notifikace. Aby
+    jste otevřeli centrum, můžete najet myší na pravou hranu monitoru, kde je lehce vidět hrana tohoto centra, nebo v dotykovém
+    módu stačí na centrum kliknout a centrum se otevře.
+    \newline
+    \begin{center}
+      \includegraphics[scale=0.20]{notifCenterScreenshot}
+    \end{center}
+
+  \item \textbf{Aplikační spouštěč:} se dá spustit buď přes klávesovou zkratku \verb|SUPER+TAB| a nebo pomocí tlačítka v levém
+    horním rohu. Nahoře je lištu s vyhledávacím políčkem pro aplikace. Orientovat se můžeme buď myší, touchpadem, dotykovou obrazovkou 
+    a nebo šipkami na klávesnici.
+\end{itemize}
+
+
+
+\subsection{Úprava vzhledu HYPRSURFACE}
+Vzhled se dá upravovat na většině úrovní. Pokud chcete změnit vzhled lišty, vyskakovacích oken a widgetů, tak můžete přepsat barvy v souboru
+\texttt{\justify \textasciitilde/.config/quickshell/Services/Design.qml}. Jinak můžeme měnit ještě pozadí, buďto pomocí vyskakovacího
+okna (\verb|SUPER+W|), které bere obrázky z \texttt{\justify \textasciitilde/Pictures/Wallpapers} a nabízí jejich náhledy, nebo pomocí
+terminálu, kde napíšte \texttt{\justify awww <path-to-picture>}.
+
+% Závěr
+\newpage
+\section{Závěr}
+Výsledný produkt je stále daleko od mých představ, je spousta věcí, které jsem nestíhal implementovat, nebo přímo nešlo implementovat.
+Jedním z takových problémů byla klávesnice na displeji, jenž mi udělala spoustu problémů ke konci projektu. Klávesnice se stále
+dá spustit přes jednoduchý command, ale je rozbitá a nejde s ní pohybovat. Naštěstí toto byla jediný věc, který byla přímo cílem tohoto
+projektu a jediná, jež je stále nefunkční. Naopak vše ostatní, co jsem si na začátku projektu zadal, je již funkční. Uživatelské rozhraní
+je zatím z většiny bez animací, ale mám v plánu je přidat.
+
+Jak by se měl produkt projektu dále rozvíjet? Rád bych v projektu nekončil a rád bych ho dále upravoval. Mé výhledy do budoucnosti jsou z
+převážně v UI a ovládání. Jedním z nich je přídání palm-rejection\footnote{Dovoluje si opřít ruku o display při psaní perem, bez regisrace
+dotyků od ruky.}. Dále budu chtít předělat spoustu widgetů, aby měly animace a další vyskakovací menu. Ku příkladu menu na úpravu hlasitosti,
+nebo jasu. Také bych rád přidal nastavení celého systému integrované do UI. Zde by měly jít nastavovat veškeré barvy, pozice widgetů, obsah
+notifikací, aj. A úplně ke konci bych rád spojil barevnou paletu obrázku s tou mou pomocí hellwal \autocite{DanihekHellwalPywallike}.
+
+Na konec bych rád ještě shrnul, co se v projektu, dle zadání, podařilo vytvořit. Prvně se mi podařilo nainstalovat a nakonfigurovat veškeré
+systémy, které byly pro projekt důležité. Dále jsem začal základními widgety v QuickShellu, jako byly hodiny a pracovní prostředí. Poté jsem 
+se přesunul na náročnější věci, jako je spouštěč aplikací a notifikační správce. Všechny tyto důležité části byly vytvořeny úspěšně a 
+jsou v produkčním stavu. Systém by se dal již označit za distribuovatelný v beta fázi.
+
+% Zdroje
+\newpage
+\printbibliography[
+heading=bibintoc,
+title={Zdroje}
+]
+
+\end{document}

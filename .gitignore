@@ -65,6 +65,9 @@
 # Mendatory
 !.gitignore
 
+# docs
+!docs/
+!docs/**
 
 # OTHERS
 
