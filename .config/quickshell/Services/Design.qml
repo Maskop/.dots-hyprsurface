@@ -52,7 +52,7 @@ Singleton {
   property bool clockWidgetVisible: true
   property bool appWorkspacesButtonVisible: true
   property bool statusWidgetVisible: true
-  property bool virtKeyboardButtonVisible: false
+  property bool virtKeyboardButtonVisible: true
   property bool workspacesVisible: true
   property bool workspaceMoverButtonVisible: true
 

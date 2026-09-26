@@ -2,7 +2,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Export PATH
-export PATH=/usr/local/texlive/2026/bin/x86_64-linux:$PATH
+export PATH=/usr/local/texlive/2026/bin/x86_64-linux:/home/maskop/.cache/miri:/home/maskop/.cargo/bin:$PATH
 export MANPATH=/usr/local/texlive/2026/texmf-dist/doc/man:$MANPATH
 export INFOPATH=/usr/local/texlive/2026/texmf-dist/doc/info:$INFOPATH
 
