@@ -9,6 +9,7 @@ Singleton {
   property list<QtObject> notifications
   property list<QtObject> notifActive
   property list<var> timer
+  property bool noitfSilent: false
 
 
   onNotificationsChanged: {

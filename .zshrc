@@ -73,6 +73,7 @@ alias fabric='fabric-ai'
 alias py='python'
 alias gocker='~/.venv-PythonApps/bin/gocker'
 alias dots='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias cppreference="firefox ~/.local/share/cpp-reference/reference/en/c.html"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
